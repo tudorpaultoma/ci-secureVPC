@@ -8,7 +8,7 @@ There are no special requirements to implement this solution as it is one of the
 However, you need some basic requirements:
 
 ## Standard Requirements
-     - Tencent Cloud Account
+     - Tencent Cloud Account: https://intl.cloud.tencent.com/
      - local terraform: https://learn.hashicorp.com/terraform/getting-started/install.html
      - a code editor: https://code.visualstudio.com/download
 
