@@ -39,3 +39,10 @@ However, you need
  - EIP
     - A payable resource that will be associated to the NAT Gateway and provide the source for the outbound internet traffic
 
+# Deployment
+
+This solution can be deployed with Tencent Infrastructure as Code (TIC) - https://intl.cloud.tencent.com/product/tic
+Alternatively, you can add the provider section and deploy with Terraform
+
+# Author
+ - Tudor Paul Toma - Clous Solutions Architect - Tencent Cloud
