@@ -12,6 +12,7 @@ However, you need
 
 # Design
 <img src="images/Secure_3tier_VPC.jpeg">
+
 # Components
 
  - VPC
