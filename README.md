@@ -11,7 +11,7 @@ However, you need
      - a code editor: https://code.visualstudio.com/download
 
 # Design
-
+<img src="images/Secure_3tier_VPC.jpeg">
 # Components
 
  - VPC
