@@ -5,7 +5,9 @@ This solution is being created to serve any kind of deployment that needs a mult
 # Requirements
 
 There are no special requirements to implement this solution as it is one of the basic building blocks of the cloud infrastructure
-However, you need
+However, you need some basic requirements:
+
+## Standard Requirements
      - Tencent Cloud Account
      - local terraform: https://learn.hashicorp.com/terraform/getting-started/install.html
      - a code editor: https://code.visualstudio.com/download
