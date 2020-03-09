@@ -48,4 +48,4 @@ This solution can be deployed with Tencent Infrastructure as Code (TIC) - https:
 Alternatively, you can add the provider section and deploy with Terraform
 
 # Author
- - Tudor Paul Toma - Clous Solutions Architect - Tencent Cloud
+ - Tudor Paul Toma - Cloud Solutions Architect - Tencent Cloud
