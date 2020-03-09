@@ -4,4 +4,4 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
-#*main.tf*
+*main.tf*
