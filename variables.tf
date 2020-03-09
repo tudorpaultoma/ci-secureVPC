@@ -57,3 +57,33 @@ variable "AZ-1" {
   default     = "1"
   description = "The value for the first availability zone"
 }
+
+variable "rt-public-entry1-destination"                     {default     = "0.0.0.0"}
+variable "rt-public-entry1-next_hop_type"                   {default     = "NAT"}
+variable "rt-public-entry1-description"                     {default     = "default route to NAT gateway"}
+
+variable "rt-service-entry1-destination"                    {default     = "0.0.0.0"}
+variable "rt-service-entry1-next_hop_type"                  {default     = "NAT"}
+variable "rt-service-entry1-description"                    {default     = "default route to NAT gateway"}
+
+variable "rt-data-entry1-destination"                       {default     = "0.0.0.0"}
+variable "rt-data-entry1-next_hop_type"                     {default     = "NAT"}
+variable "rt-data-entry1-description"                       {default     = "default route to NAT gateway"}
+
+variable "natgw-bandwidth" {
+  type        = string
+  default     = "20"
+  description = "The value for the nat gateway bandwidth"
+}
+
+variable "natgw-max-concurrent" {
+  type        = string
+  default     = "1000000"
+  description = "The value for the nat gateway max concurrent sessions"
+}
+
+variable "natgw-assigned-eip" {
+  type        = string
+  default     = "1000000"
+  description = "The value for the nat gateway max concurrent sessions"
+}
