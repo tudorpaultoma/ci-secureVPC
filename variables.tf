@@ -4,6 +4,12 @@ variable "project-name" {
   description = "The name of the Project"
 }
 
+variable "project-id" {
+  type        = string
+  default     = "1172987"
+  description = "The ID of the Project"
+}
+
 variable "region" {
   type        = string
   default     = "eu-frankfurt"
@@ -30,7 +36,7 @@ variable "tag-owner" {
 
 variable "tag-purpose" {
   type        = string
-  default     = "governed Secure VPC deployment"
+  default     = "governed_Secure_VPC_deployment"
   description = "The purpose of the deployment"
 }
 
@@ -58,15 +64,15 @@ variable "AZ-1" {
   description = "The value for the first availability zone"
 }
 
-variable "rt-public-entry1-destination"                     {default     = "0.0.0.0"}
+variable "rt-public-entry1-destination"                     {default     = "0.0.0.0/0"}
 variable "rt-public-entry1-next_hop_type"                   {default     = "NAT"}
 variable "rt-public-entry1-description"                     {default     = "default route to NAT gateway"}
 
-variable "rt-service-entry1-destination"                    {default     = "0.0.0.0"}
+variable "rt-service-entry1-destination"                    {default     = "0.0.0.0/0"}
 variable "rt-service-entry1-next_hop_type"                  {default     = "NAT"}
 variable "rt-service-entry1-description"                    {default     = "default route to NAT gateway"}
 
-variable "rt-data-entry1-destination"                       {default     = "0.0.0.0"}
+variable "rt-data-entry1-destination"                       {default     = "0.0.0.0/0"}
 variable "rt-data-entry1-next_hop_type"                     {default     = "NAT"}
 variable "rt-data-entry1-description"                       {default     = "default route to NAT gateway"}
 
@@ -87,3 +93,4 @@ variable "natgw-assigned-eip" {
   default     = "1000000"
   description = "The value for the nat gateway max concurrent sessions"
 }
+

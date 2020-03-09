@@ -84,7 +84,7 @@ EIP Resource
 resource "tencentcloud_eip" "natgw-EIP" {
 
   #-----Required parameters-----
-  name = "eip-${var.project-name}-${var.region}-${var.environment}-01"
+  name = "eip-${var.project-name}-01"
 }
 
 
@@ -99,7 +99,7 @@ resource "tencentcloud_nat_gateway" "secureVPC-NATGW" {
   vpc_id           = tencentcloud_vpc.secureVPC.id
   bandwidth        = var.natgw-bandwidth
   max_concurrent   = var.natgw-max-concurrent
-  assigned_eip_set = tencentcloud_eip.natgw-EIP.public_ip
+  assigned_eip_set = ["${tencentcloud_eip.natgw-EIP.public_ip}"]
 }
 
 /*******************
@@ -178,4 +178,163 @@ resource "tencentcloud_route_table_entry" "data-default-route" {
 
   #-----Optional but highly recommended parameters-----
   description            = var.rt-data-entry1-description
+}
+
+resource "tencentcloud_security_group" "sg-secureVPC-publicCVMs" {
+
+  #-----Required parameters-----
+  name              = "sg-${var.project-name}-publicCVMs"
+
+  #-----Optional but highly recommended parameters-----
+  project_id  = var.project-id
+  description = "sg-${var.project-name}-publicCVMs-${var.tag-owner}-${var.tag-purpose}-${var.environment}-${var.tag-security_lvl}"
+  tags = {
+    "owner"         = var.tag-owner
+    "purpose"       = var.tag-purpose
+    "environment"   = var.environment
+    "security_lvl"  = var.tag-security_lvl
+  }
+}
+
+resource "tencentcloud_security_group" "sg-secureVPC-serviceCVMs" {
+
+  #-----Required parameters-----
+  name        = "sg-${var.project-name}-serviceCVMs"
+
+  #-----Optional but highly recommended parameters-----
+  
+  project_id  = var.project-id
+  description = "sg-${var.project-name}-serviceCVMs-${var.tag-owner}-${var.tag-purpose}-${var.environment}-${var.tag-security_lvl}"
+  tags = {
+    "owner"         = var.tag-owner
+    "purpose"       = var.tag-purpose
+    "environment"   = var.environment
+    "security_lvl"  = var.tag-security_lvl
+  }
+}
+
+resource "tencentcloud_security_group" "sg-secureVPC-dataCVMs" {
+
+  #-----Required parameters-----
+  name        = "sg-${var.project-name}-dataCVMs"
+
+  #-----Optional but highly recommended parameters-----
+  project_id  = var.project-id
+  description = "sg-${var.project-name}-dataCVMs-${var.tag-owner}-${var.tag-purpose}-${var.environment}-${var.tag-security_lvl}"
+  tags = {
+    "owner"         = var.tag-owner
+    "purpose"       = var.tag-purpose
+    "environment"   = var.environment
+    "security_lvl"  = var.tag-security_lvl
+  }
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-publicCVMs-r1" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  ip_protocol       = "TCP"
+  port_range        = "22"
+  policy            = "ACCEPT"
+  description       = "allow ssh"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-publicCVMs-r2" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  ip_protocol       = "TCP"
+  port_range        = "3389"
+  policy            = "ACCEPT"
+  description       = "allow rdp"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-publicCVMs-r3" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  ip_protocol       = "ICMP"
+  #port_range        = ""
+  policy            = "ACCEPT"
+  description       = "allow icmp"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-publicCVMs-r4" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  #ip_protocol       = "ALL"
+  #port_range        = "ALL"
+  policy            = "ACCEPT"
+  description       = "allow all internal"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-serviceCVMs-r1" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  type              = "ingress"
+  source_sgid       = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  ip_protocol       = "TCP"
+  port_range        = "22"
+  policy            = "ACCEPT"
+  description       = "allow ssh"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-serviceCVMs-r2" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  type              = "ingress"
+  source_sgid       = tencentcloud_security_group.sg-secureVPC-publicCVMs.id
+  ip_protocol       = "TCP"
+  port_range        = "3389"
+  policy            = "ACCEPT"
+  description       = "allow rdp"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-serviceCVMs-r3" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  ip_protocol       = "ICMP"
+  #port_range        = ""
+  policy            = "ACCEPT"
+  description       = "allow icmp"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-serviceCVMs-r4" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  #ip_protocol       = "ALL"
+  #port_range        = "ALL"
+  policy            = "ACCEPT"
+  description       = "allow all internal"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-dataCVMs-r1" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-dataCVMs.id
+  type              = "ingress"
+  source_sgid       = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  ip_protocol       = "TCP"
+  port_range        = "22"
+  policy            = "ACCEPT"
+  description       = "allow ssh"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-dataCVMs-r2" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-dataCVMs.id
+  type              = "ingress"
+  source_sgid       = tencentcloud_security_group.sg-secureVPC-serviceCVMs.id
+  ip_protocol       = "TCP"
+  port_range        = "3389"
+  policy            = "ACCEPT"
+  description       = "allow rdp"
+}
+
+resource "tencentcloud_security_group_rule" "sg-secureVPC-dataCVMs-r3" {
+  security_group_id = tencentcloud_security_group.sg-secureVPC-dataCVMs.id
+  type              = "ingress"
+  cidr_ip           = var.vpc_cidr
+  #ip_protocol       = "ALL"
+  #port_range        = "ALL"
+  policy            = "ACCEPT"
+  description       = "allow all internal"
 }
